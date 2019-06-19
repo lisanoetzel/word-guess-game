@@ -1,8 +1,13 @@
-//computer chooses a name from a list of 10
+//computer randomly chooses a name from a list (an array?) of 10 artists
 
 var computerChoice = Math.floor(Math.random() * 10) + 1
-
 console.log(computerChoice)
+
+var artist = ["Leonardo da Vinci", "Michelangelo", "Raphael", "Titian", "Giorgione", "Giovanni Bellini","Botticelli", "Perugino", "Verrocchio", "Ghirlandaio" ]
+
+
+
+
 
 
 
