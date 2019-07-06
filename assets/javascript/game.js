@@ -1,41 +1,65 @@
+//Test to see if JS is properly linked & it works !!
+// alert("Test");
 
-//game generates a list (an array?) of 10 artists
+//******************* */Global Variables***************************************
 
+var artistOptions = [{
+  name:"Leonardo",
+  image: src="assets/images/Leonardo.jpg" 
+}, {
+  name: "Raffaello",
+  image: src="assets/images/Raffaello.jpg"
+}, {
+  name: "Michelangelo",
+  image: src="assets/images/Michelangelo.jpg"
+}, {
+  name: "Tiziano",
+  image: src="assets/images/Tiziano.jpg"
+}, {
+  name: "Giorgione",
+  image: src="assets/images/Giorgione.jpg"
+}, {
+  name: "Bellini",
+  image: src="assets/images/Bellini.jpg"
+}, {
+  name: "Botticelli",
+  image: src="assets/images/Botticelli.jpg"
+}, {
+  name: "Perugino",
+  image: src="assets/images/Perugino.jpg"
+}, {
+  name: "Verrocchio",
+  image: src="assets/images/Verrocchio.jpg"
+}, {
+  name: "Ghirlandaio",
+  image: src="assets/images/Ghirlandaio.jpg"
+}, {
+  name: "Donatello",
+  image: src="assets/images/Donatello.jpg"
+}];
 
-var artistOptions = ["Leonardo", "Michelangelo", "Raffaello", "Tiziano", "Giorgione", "Bellini","Botticelli", "Perugino", "Verrocchio", "Ghirlandaio"];
-
+var computerChoice = "";
+var lettersinName = [];
 var blanksArray = [];
-var computerChoice;
-var numberWins;
-var numberLosses;
-var wrongGuesses;
-var guessesLeft;
-var blankString = "";
+var rightGuesses = [];
+var wrongGuesses = [];
 
-  console.log(artistOptions.length);
+//Game counters
+var winCount = 0;
+var lossCount = 0;
+var guessesLeft = 5;
 
+
+//*****************************FUNCTIONS************************************
 // computer randomly chooses an artist from the options array 
-computerChoice = artistOptions[Math.floor(Math.random() * artistOptions.length)];
 
-  console.log(computerChoice)
+function gameStart (){ 
+  computerChoice = artistOptions[Math.floor(Math.random() * artistOptions.length)];
 
-// when artist is chosen, blanks appear vs artist name
-for (i=0; i<computerChoice.length; i++){
-  blankString = blankString + "_";
-  blanksArray.push("_")
-};
 
-  console.log(blankString);
-  console.log(blanksArray);
+//this RegEx function used when user presses key and compares to letters in artists' name
 
-//this selector links the above JS function to HTML ID
- var blanks = document.getElementById("blanks").innerHTML = blankString;
-
-  
-
- //this RegEx function used when user presses key and compares to letters in artists' name
-
- function inputValidation(input) {
+function inputValidation(input) {
   var regExp = /^[A-Za-z]+$/;
 
   if(input.match(regExp)) {
@@ -46,19 +70,54 @@ for (i=0; i<computerChoice.length; i++){
   }
 }
 
-//this is a listener
+// here function determines which key was pressed.
+
+var userGuess = event.key;
+
+if (inputValidation(input) == false){
+  alert("Only letters are allowed !!");
+}
+
+else { 
+  console.log(input)
+
+// reset Game
+  var guessesLeft = 5;
+  wrongGuesses = [];
+  rightGuesses = [];
+
+// when artist is chosen, blanks appear vs artist name
+      for (i=0; i<computerChoice.name.length; i++){
+
+        blanksArray.push("_")
+      }
+
+//this selector links the above JS function to HTML ID
+      document.getElementById("blanks").innerText = blanksArray.join(" ");
+      document.getElementById("lettersGuessed").innerText = guessesLeft;
+      document.getElementById("winCounter").innerText = winCount;
+      document.getElementById("lossCounter").innerText = lossCount;
+
+// Testing
+        console.log(computerChoice);
+        console.log(computerChoice.image)
+        console.log(lettersinName);
+        console.log(blanksArray);
+
+
+
+};
+
+//*******************Processing****************************************
+
+// Run the code for the first time
+gameStart();
+
+
+// Register keyclicks i.e. this is a listener
 document.onkeyup = function(event) {
 
-  // here function determines which key was pressed.
-
-      var userGuess = event.key;
-
-      if (inputValidation(userInput) == false){
-        alert("Only letters are allowed !!");
-      }
-      
-      else { 
-        console.log(userInput)
+  
     // This spits out the repeating letters of a word
 
         if (computerChoice.includes(userGuess)){
