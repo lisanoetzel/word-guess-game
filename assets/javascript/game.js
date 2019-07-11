@@ -94,23 +94,20 @@ function checkLetters(letter) {
   console.log(letter); // PROBLEMS PROBLEMS ~~ cf. console.log"Letter Found" in PROCESSING
   var isLetterinWord = false;
   for (var i=0; i<numBlanks; i++){
-    if(computerChoice[i] == letter){
+    console.log (letter, computerChoice[i]);
+    if(computerChoice[i].toLowerCase() === letter){
       isLetterinWord = true;
+      rightGuesses[i] = letter;
+          console.log("match found");
     } //ln 97
   } // ln 96
 
   // this checks where letters appear in names + populates them in rightGuesses ~~ PROBLEMS HERE ~~
-    if(isLetterinWord) {
-      for (var i=0; i<numBlanks; i++) {
-        if(computerChoice[i] == letter){
-          rightGuesses[i] = letter;
-          } //ln 105
-        } //ln 104
-    } //ln 103  
-    else {  // letter is not found
+    if(!isLetterinWord) {
       wrongGuesses.push(letter);
       guessesLeft--;
-    } //ln 110
+      console.log("incorrect guess");
+    } //ln 106
   // Testing
     console.log(rightGuesses); //~~~~~~~~~~~~~~~~~~~~~~~~~
 } // ln 92
@@ -125,7 +122,6 @@ function checkLetters(letter) {
         var letterGuessed = String.fromCharCode(event.keyCode).toLowerCase();
         // test for user's keyclick
             console.log(letterGuessed); // works  
-            console.log("Letter found"); 
 
   //this runs the 2nd function - comparing user's letters to those in name
       checkLetters(letterGuessed);// PROBLEM!!! says all letters chosen by user are in artist's name - 
