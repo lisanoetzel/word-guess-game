@@ -3,50 +3,51 @@
 
 //******************* */Global Variables***************************************
 
-var artistOptions = ["Leonardo", "Raffaello", "Michelangelo", "Tiziano", "Giorgione", "Bellini", "Botticelli", "Perugino", "Verrocchio", "Ghirlandaio", "Donatello"];
+// var artistOptions = ["Leonardo", "Raffaello", "Michelangelo", "Tiziano", "Giorgione", "Bellini", "Botticelli", "Perugino", "Verrocchio", "Ghirlandaio", "Donatello"];
 
 //Temporarily giving up on the object model to go with the above name array
 
-//var artistOptions = [{
-//  name:"Leonardo",
-//  image: src="assets/images/Leonardo.jpg" 
-//}, {
-//  name: "Raffaello",
-//  image: src="assets/images/Raffaello.jpg"
-//}, {
-//  name: "Michelangelo",
-//  image: src="assets/images/Michelangelo.jpg"
-//}, {
-//  name: "Tiziano",
-//  image: src="assets/images/Tiziano.jpg"
-//}, {
-//  name: "Giorgione",
-//  image: src="assets/images/Giorgione.jpg"
-//}, {
-//  name: "Bellini",
-//  image: src="assets/images/Bellini.jpg"
-//}, {
-//  name: "Botticelli",
-//  image: src="assets/images/Botticelli.jpg"
-//}, {
-//  name: "Perugino",
-//  image: src="assets/images/Perugino.jpg"
-//}, {
-//  name: "Verrocchio",
-//  image: src="assets/images/Verrocchio.jpg"
-//}, {
-//  name: "Ghirlandaio",
-//  image: src="assets/images/Ghirlandaio.jpg"
-//}, {
-//  name: "Donatello",
-//  image: src="assets/images/Donatello.jpg"
-//}];
+var artistOptions = [{
+ name:"Leonardo",
+ image: src="assets/images/Leonardo.jpg" 
+}, {
+ name: "Raffaello",
+ image: src="assets/images/Raffaello.jpg"
+}, {
+ name: "Michelangelo",
+ image: src="assets/images/Michelangelo.jpg"
+}, {
+ name: "Tiziano",
+ image: src="assets/images/Tiziano.jpg"
+}, {
+ name: "Giorgione",
+ image: src="assets/images/Giorgione.jpg"
+}, {
+ name: "Bellini",
+ image: src="assets/images/Bellini.jpg"
+}, {
+ name: "Botticelli",
+ image: src="assets/images/Botticelli.jpg"
+}, {
+ name: "Perugino",
+ image: src="assets/images/Perugino.jpg"
+}, {
+ name: "Verrocchio",
+ image: src="assets/images/Verrocchio.jpg"
+}, {
+ name: "Ghirlandaio",
+ image: src="assets/images/Ghirlandaio.jpg"
+}, {
+ name: "Donatello",
+ image: src="assets/images/Donatello.jpg"
+}];
 
 var computerChoice = "";
 var lettersinName = [];
 var numBlanks = 0;
 var rightGuesses = [];
 var wrongGuesses = [];
+var gameStarted = true;
 
 //Game counters
 var winCount = 0;
@@ -58,7 +59,9 @@ var guessesLeft = 5;
 // in this 1st function, the computer randomly chooses an artist from the options array 
 
 function startGame (){ 
-  computerChoice = artistOptions[Math.floor(Math.random() * artistOptions.length)];
+  gameStarted = true;
+  var index = Math.floor(Math.random() * artistOptions.length)
+  computerChoice = artistOptions[index].name;
   // this splits the artist's name into individual letters
         lettersinName = computerChoice.split("");
   // this counts the number of blanks needed for each letter in a name
@@ -79,6 +82,8 @@ function startGame (){
       document.getElementById("numGuesses").innerHTML = guessesLeft;
       document.getElementById("winCounter").innerHTML = winCount;
       document.getElementById("lossCounter").innerHTML = lossCount;
+      document.getElementById("wrongGuesses").innerHTML = wrongGuesses; // clears wrong guesses
+      document.getElementById("image").src = artistOptions[index].image;
 
   // Testing
       console.log(computerChoice); //works - spits out random names !
@@ -93,10 +98,10 @@ function checkLetters(letter) {
   console.log(letter);  // testing for letter in word
   var isLetterinWord = false;
   for (var i=0; i<numBlanks; i++){
-    console.log (letter, computerChoice[i]);
+    console.log (letter, computerChoice[i]); // testing 
     if(computerChoice[i].toLowerCase() === letter){
       isLetterinWord = true;
-      rightGuesses[i] = letter;
+      rightGuesses[i] = computerChoice[i]; // this will put capital letters in right answers 
           console.log("match found");
     } //ln 97
   } // ln 96
@@ -120,25 +125,28 @@ function roundComplete (){
         document.getElementById("blanks").innerHTML = rightGuesses.join(" ");
         document.getElementById("wrongGuesses").innerHTML = wrongGuesses.join(" ");
     // Check if user won
-    if (lettersinName.toString() == rightGuesses.toString()) {
+    console.log(lettersinName.toString(),rightGuesses.toString());
+    if (lettersinName.toString() === rightGuesses.toString()) {
+        gameStarted = false;
         winCount++;
-        alert("You Won !!"); // PROBLEM !!! Alert not appearing & win Counter not increasing
+       alert("You Won !!");  // testing
 
     // Update the win counter in HTML
         document.getElementById("winCounter").innerHTML = winCount;
 
-        startGame();
+        // startGame();
     } // ln 123 
     
    // Check if user lost
-    else if (guessesLeft == 0){
+    else if (guessesLeft === 0){
+          gameStarted = false;
           lossCount++;
-          alert("You lost"); // works
+          alert("You lost. The correct answer was " + computerChoice.join("")); // works
 
     // Update the loss counter in HTML
         document.getElementById("lossCounter").innerHTML = lossCount;
 
-        startGame();
+       // startGame(); 
     } // ln 130
 } //ln 116
 
@@ -149,6 +157,10 @@ function roundComplete (){
 
   // this registers the user's keyclicks i.e. this is a listener
       document.onkeyup = function(event) {
+        if (!gameStarted) {
+          startGame()
+          return
+        }
         var letterGuessed = String.fromCharCode(event.keyCode).toLowerCase();
         // test for user's keyclick
             console.log(letterGuessed); // works  
