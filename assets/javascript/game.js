@@ -88,10 +88,9 @@ function startGame (){
 } // ln 60
       
 // this 2nd function compares the letters chosen by user + the letters in the artist's name
- // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 function checkLetters(letter) {
-  // testing for letter in word
-  console.log(letter); // PROBLEMS PROBLEMS ~~ cf. console.log"Letter Found" in PROCESSING
+  console.log(letter);  // testing for letter in word
   var isLetterinWord = false;
   for (var i=0; i<numBlanks; i++){
     console.log (letter, computerChoice[i]);
@@ -102,27 +101,62 @@ function checkLetters(letter) {
     } //ln 97
   } // ln 96
 
-  // this checks where letters appear in names + populates them in rightGuesses ~~ PROBLEMS HERE ~~
+  // this checks where letters appear in names + populates them in rightGuesses  
+    
     if(!isLetterinWord) {
       wrongGuesses.push(letter);
-      guessesLeft--;
-      console.log("incorrect guess");
+      guessesLeft--; 
+      console.log("incorrect guess"); // Testing
     } //ln 106
-  // Testing
-    console.log(rightGuesses); //~~~~~~~~~~~~~~~~~~~~~~~~~
+    console.log(rightGuesses);  // Testing 
+       
 } // ln 92
+
+// this 3rd function completes the round
+function roundComplete (){
+  console.log("Win Count:" + winCount + " | Loss Count:" + lossCount + " | Guesses Left:" + guessesLeft);
+    // update HTML to most recent count information
+        document.getElementById("numGuesses").innerHTML = guessesLeft;
+        document.getElementById("blanks").innerHTML = rightGuesses.join(" ");
+        document.getElementById("wrongGuesses").innerHTML = wrongGuesses.join(" ");
+    // Check if user won
+    if (lettersinName.toString() == rightGuesses.toString()) {
+        winCount++;
+        alert("You Won !!"); // PROBLEM !!! Alert not appearing & win Counter not increasing
+
+    // Update the win counter in HTML
+        document.getElementById("winCounter").innerHTML = winCount;
+
+        startGame();
+    } // ln 123 
+    
+   // Check if user lost
+    else if (guessesLeft == 0){
+          lossCount++;
+          alert("You lost"); // works
+
+    // Update the loss counter in HTML
+        document.getElementById("lossCounter").innerHTML = lossCount;
+
+        startGame();
+    } // ln 130
+} //ln 116
 
 //*******************  Processing ***************************
 
   // this runs the code for the first time
       startGame(); 
-  
+
   // this registers the user's keyclicks i.e. this is a listener
       document.onkeyup = function(event) {
         var letterGuessed = String.fromCharCode(event.keyCode).toLowerCase();
         // test for user's keyclick
             console.log(letterGuessed); // works  
 
-  //this runs the 2nd function - comparing user's letters to those in name
-      checkLetters(letterGuessed);// PROBLEM!!! says all letters chosen by user are in artist's name - 
-      } //ln 122
+  // this runs the 2nd function - comparing user's letters to those in name
+      checkLetters(letterGuessed);
+  
+  // this runs the 3rd function - round complete
+      roundComplete();
+
+      } //ln 125
